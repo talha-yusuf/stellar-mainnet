@@ -21,20 +21,7 @@ createKeyPair.get('/', function(req, res){
   console.log("Secret key: "+secret_key);
   console.log("Public key: "+public_key); 
   
-  var keyPair = {'secret': secret_key, 'public': public_key};
-  
-  // request.get({
-  //     url: 'https://horizon-testnet.stellar.org/friendbot/',
-  //     qs: { addr: public_key },
-  //     json: true
-  //   }, function(error, response, body) {
-  //     if (error || response.statusCode !== 200) {
-  //       console.error('ERROR!', error || body);
-  //     }
-  //     else {
-  //       console.log('SUCCESS! You have a new account :)\n', body);
-  //     }
-  // });    
+  var keyPair = {'secret': secret_key, 'public': public_key};   
   
   res.contentType('application/json');
   res.end(JSON.stringify(keyPair));
@@ -46,7 +33,6 @@ app.use('/keypair', createKeyPair);
 var getBal = express.Router();
 getBal.post('/', function(request, res){
     var server = new StellarSdk.Server('https://horizon.stellar.org');  //For Mainnet
-    // var server = new StellarSdk.Server('https://horizon-testnet.stellar.org');
     var balanceList = [];
 
     public_key = request.body.public_address;
@@ -134,7 +120,7 @@ createToken.post('/', function(request, response){
   var receivingKeys = StellarSdk.Keypair.fromSecret(distributingSecret);
 
   // Create an object to represent the new asset
-  var mkj = new StellarSdk.Asset('MKJ', issuingKeys.publicKey());
+  var mkj = new StellarSdk.Asset('CCC', issuingKeys.publicKey());
 
   // First, the receiving account must trust the asset
   server.loadAccount(receivingKeys.publicKey())
@@ -193,7 +179,7 @@ sendToken.post('/', function(req,res,next){
     console.log("this is receive key" ,receivingKeys)
     
     
-    var mkj = new StellarSdk.Asset('MKJ',sourceKey);
+    var mkj = new StellarSdk.Asset('CCC',sourceKey);
    
  
 
@@ -201,7 +187,7 @@ sendToken.post('/', function(req,res,next){
     .then(function(account) {
         var trusted = account.balances.some(function(balance) {
         console.log(balance);
-        return balance.asset_code === 'MKJ' && balance.asset_issuer === sourceKey;
+        return balance.asset_code === 'CCC' && balance.asset_issuer === sourceKey;
         });
         if(trusted===true){
             console.log('trusted')
@@ -239,8 +225,8 @@ checkTrust.post('/', function (request, response){
 
   var server = new StellarSdk.Server('https://horizon.stellar.org');
 
-  var mkj = 'MKJ';
-  var mkjIssuer = 'GC2BWW4EJMWHGUT6KTPMER3CR7OUP7MIX62RVF3AOJEQFS4IYVHG6ACI';
+  var mkj = 'CCC';
+  var mkjIssuer = 'GDEH2IUXOBIJXMX5KTQSKYB4E2DGQCT34LCJM3TG7JQFJO6FTONQHTUC';
 
   var accountId = request.body.account_id;
   server.loadAccount(accountId)
@@ -273,13 +259,13 @@ makeTrust.post('/', function (request, response){
   var server = new StellarSdk.Server('https://horizon.stellar.org');
 
   // source account of the token
-  var sourceKey = 'GC2BWW4EJMWHGUT6KTPMER3CR7OUP7MIX62RVF3AOJEQFS4IYVHG6ACI'; //StellarSdk.Keypair.fromSecret('SCQ32Y4DFG5GFRV3RSVBY5AI2MNNAI64WV52T43ANOCGH2NYHHKPC5IS');
+  var sourceKey = 'GDEH2IUXOBIJXMX5KTQSKYB4E2DGQCT34LCJM3TG7JQFJO6FTONQHTUC'; //StellarSdk.Keypair.fromSecret('SCQ32Y4DFG5GFRV3RSVBY5AI2MNNAI64WV52T43ANOCGH2NYHHKPC5IS');
 
   // account which is making trust with the token
   var investorkey = request.body.investor_key;
   var receivingKeys = StellarSdk.Keypair.fromSecret(investorkey);
 
-  var mkj = new StellarSdk.Asset('MKJ', sourceKey);
+  var mkj = new StellarSdk.Asset('CCC', sourceKey);
 
   // change trust and submit transaction
   server.loadAccount(receivingKeys.publicKey())
