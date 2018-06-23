@@ -21,8 +21,8 @@ createKeyPair.get('/', function(req, res){
   console.log("Secret key: "+secret_key);
   console.log("Public key: "+public_key); 
   
-  var keyPair = {'secret': secret_key, 'public': public_key};   
-  
+  var keyPair = {'secret': secret_key, 'public': public_key};
+   
   res.contentType('application/json');
   res.end(JSON.stringify(keyPair));
 });
@@ -120,14 +120,14 @@ createToken.post('/', function(request, response){
   var receivingKeys = StellarSdk.Keypair.fromSecret(distributingSecret);
 
   // Create an object to represent the new asset
-  var mkj = new StellarSdk.Asset('CCC', issuingKeys.publicKey());
+  var ccc = new StellarSdk.Asset('CCC', issuingKeys.publicKey());
 
   // First, the receiving account must trust the asset
   server.loadAccount(receivingKeys.publicKey())
     .then(function(receiver) {
       var transaction = new StellarSdk.TransactionBuilder(receiver)
         .addOperation(StellarSdk.Operation.changeTrust({
-          asset: mkj,
+          asset: ccc,
         }))
         .build();
       transaction.sign(receivingKeys);
@@ -142,7 +142,7 @@ createToken.post('/', function(request, response){
       var transaction = new StellarSdk.TransactionBuilder(issuer)
         .addOperation(StellarSdk.Operation.payment({
           destination: receivingKeys.publicKey(),
-          asset: mkj,
+          asset: ccc,
           amount: totolSupply
         }))
         .build();
@@ -179,10 +179,8 @@ sendToken.post('/', function(req,res,next){
     console.log("this is receive key" ,receivingKeys)
     
     
-    var mkj = new StellarSdk.Asset('CCC',sourceKey);
+    var ccc = new StellarSdk.Asset('CCC',sourceKey);
    
- 
-
     server.loadAccount(receivingKeys)
     .then(function(account) {
         var trusted = account.balances.some(function(balance) {
@@ -196,7 +194,7 @@ sendToken.post('/', function(req,res,next){
                 var transaction = new StellarSdk.TransactionBuilder(issuer)
                 .addOperation(StellarSdk.Operation.payment({
                     destination: receivingKeys,
-                    asset: mkj,
+                    asset: ccc,
                     amount: req.body.amount
                 }))
                 .build();
@@ -225,7 +223,7 @@ checkTrust.post('/', function (request, response){
 
   var server = new StellarSdk.Server('https://horizon.stellar.org');
 
-  var mkj = 'CCC';
+  var ccc = 'CCC';
   var mkjIssuer = 'GDEH2IUXOBIJXMX5KTQSKYB4E2DGQCT34LCJM3TG7JQFJO6FTONQHTUC';
 
   var accountId = request.body.account_id;
@@ -233,7 +231,7 @@ checkTrust.post('/', function (request, response){
   .then(function(account) {
     var trusted = account.balances.some(function(balance) {
       console.log(balance);
-      return balance.asset_code === mkj && balance.asset_issuer === mkjIssuer;
+      return balance.asset_code === ccc && balance.asset_issuer === mkjIssuer;
     })
     if(trusted){
       response.contentType('application/json');
@@ -265,14 +263,14 @@ makeTrust.post('/', function (request, response){
   var investorkey = request.body.investor_key;
   var receivingKeys = StellarSdk.Keypair.fromSecret(investorkey);
 
-  var mkj = new StellarSdk.Asset('CCC', sourceKey);
+  var ccc = new StellarSdk.Asset('CCC', sourceKey);
 
   // change trust and submit transaction
   server.loadAccount(receivingKeys.publicKey())
     .then(function(receiver) {
       var transaction = new StellarSdk.TransactionBuilder(receiver)
         .addOperation(StellarSdk.Operation.changeTrust({
-          asset: mkj,
+          asset: ccc,
           //limit: '1000'
         }))
         .build();
