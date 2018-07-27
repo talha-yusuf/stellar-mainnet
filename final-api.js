@@ -224,7 +224,7 @@ checkTrust.post('/', function (request, response){
   var server = new StellarSdk.Server('https://horizon.stellar.org');
 
   var ccc = 'CCC';
-  var mkjIssuer = 'GDEH2IUXOBIJXMX5KTQSKYB4E2DGQCT34LCJM3TG7JQFJO6FTONQHTUC';
+  var mkjIssuer = 'GCJ5FI4Z4GEJIZAURWS6XKM22ZV2T4BPXKVY522DCZHCWP5OQTXX53VQ';
 
   var accountId = request.body.account_id;
   server.loadAccount(accountId)
@@ -257,7 +257,7 @@ makeTrust.post('/', function (request, response){
   var server = new StellarSdk.Server('https://horizon.stellar.org');
 
   // source account of the token
-  var sourceKey = 'GDEH2IUXOBIJXMX5KTQSKYB4E2DGQCT34LCJM3TG7JQFJO6FTONQHTUC'; //StellarSdk.Keypair.fromSecret('SCQ32Y4DFG5GFRV3RSVBY5AI2MNNAI64WV52T43ANOCGH2NYHHKPC5IS');
+  var sourceKey = 'GCJ5FI4Z4GEJIZAURWS6XKM22ZV2T4BPXKVY522DCZHCWP5OQTXX53VQ'; 
 
   // account which is making trust with the token
   var investorkey = request.body.investor_key;
